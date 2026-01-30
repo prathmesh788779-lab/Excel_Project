@@ -65,12 +65,14 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: "Phone",
-      lines: ["+91 99999 99999", "+91 88888 88888"],
+      lines: ["+91 6282427265"],
+      link: "tel:+916282427265",
     },
     {
       icon: Mail,
       title: "Email",
-      lines: ["info@silverstonepark.com", "reservations@silverstonepark.com"],
+      lines: ["info@silverstonepark.com"],
+      link: "mailto:info@silverstonepark.com",
     },
     {
       icon: Clock,
