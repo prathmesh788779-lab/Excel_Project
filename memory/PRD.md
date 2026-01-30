@@ -45,6 +45,10 @@ Create a fully functional, production-ready luxury resort website for "Silver St
 - Mobile hamburger menu
 - Toast notifications for form submissions
 - Smooth scroll animations with framer-motion
+- **Back Button Navigation** - On all pages except homepage
+- **WhatsApp Integration** - Floating button + header link (6282427265)
+- **Contact Number** - 6282427265 displayed in header/footer
+- **Enhanced Hover Animations** - Cards lift, glow, scale effects
 
 ### Design System
 - Typography: Playfair Display (headings), Manrope (body), Cormorant Garamond (accents)
