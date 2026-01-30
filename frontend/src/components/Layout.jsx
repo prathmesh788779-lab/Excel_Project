@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Phone, ArrowLeft, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BookingModal from "./BookingModal";
+
+const CONTACT_PHONE = "6282427265";
+const WHATSAPP_NUMBER = "916282427265";
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,15 +49,28 @@ export const Header = () => {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
-            <div className="text-white">
-              <h1 className="text-xl md:text-2xl font-playfair font-semibold tracking-wide">
-                Silver Stone Park
-              </h1>
-              <p className="text-xs tracking-[0.3em] text-gold uppercase">Resort</p>
-            </div>
-          </Link>
+          {/* Back Button + Logo */}
+          <div className="flex items-center gap-4">
+            {!isHomePage && (
+              <motion.button
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                onClick={() => navigate(-1)}
+                className="p-2 text-white hover:text-gold transition-colors rounded-full hover:bg-white/10"
+                data-testid="back-button"
+              >
+                <ArrowLeft size={24} />
+              </motion.button>
+            )}
+            <Link to="/" className="flex items-center gap-3" data-testid="logo-link">
+              <div className="text-white">
+                <h1 className="text-xl md:text-2xl font-playfair font-semibold tracking-wide">
+                  Silver Stone Park
+                </h1>
+                <p className="text-xs tracking-[0.3em] text-gold uppercase">Resort</p>
+              </div>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8" data-testid="desktop-nav">
@@ -74,12 +92,22 @@ export const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href="tel:+919999999999"
-              className="flex items-center gap-2 text-white hover:text-gold transition-colors"
+              href={`tel:+91${CONTACT_PHONE}`}
+              className="flex items-center gap-2 text-white hover:text-gold transition-all duration-300 hover:scale-105"
               data-testid="phone-link"
             >
               <Phone size={16} />
-              <span className="text-sm">+91 99999 99999</span>
+              <span className="text-sm">+91 {CONTACT_PHONE}</span>
+            </a>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I'm interested in Silver Stone Park Resort`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-white hover:text-green-400 transition-all duration-300 hover:scale-105"
+              data-testid="whatsapp-header-link"
+            >
+              <MessageCircle size={16} />
+              <span className="text-sm">WhatsApp</span>
             </a>
             <button
               onClick={() => setIsBookingOpen(true)}
@@ -192,8 +220,18 @@ export const Footer = () => {
               <li>NH-44, Khapri, Nagpur</li>
               <li>Maharashtra 441108</li>
               <li className="pt-2">
-                <a href="tel:+919999999999" className="hover:text-gold transition-colors">
-                  +91 99999 99999
+                <a href={`tel:+91${CONTACT_PHONE}`} className="hover:text-gold transition-colors">
+                  +91 {CONTACT_PHONE}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition-colors flex items-center gap-2"
+                >
+                  <MessageCircle size={14} /> WhatsApp Enquiry
                 </a>
               </li>
               <li>
@@ -250,12 +288,41 @@ export const Footer = () => {
   );
 };
 
+// Floating WhatsApp Button
+const WhatsAppFloat = () => {
+  return (
+    <motion.a
+      href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi, I'm interested in Silver Stone Park Resort`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all duration-300"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ delay: 1, type: "spring", stiffness: 200 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      data-testid="whatsapp-float-btn"
+    >
+      <MessageCircle size={28} />
+      <motion.span
+        className="absolute -top-1 -right-1 bg-gold text-white text-xs px-2 py-1 rounded-full"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        Chat
+      </motion.span>
+    </motion.a>
+  );
+};
+
 export const Layout = ({ children }) => {
   return (
     <div className="min-h-screen noise-overlay">
       <Header />
       <main>{children}</main>
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 };
