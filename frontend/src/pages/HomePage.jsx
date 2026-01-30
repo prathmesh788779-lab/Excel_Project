@@ -15,7 +15,7 @@ const IMAGES = {
   wedding: "https://images.unsplash.com/photo-1766393524464-e5eb1b05e4c8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBob3RlbCUyMHdlZGRpbmclMjByZWNlcHRpb24lMjBvdXRkb29yJTIwZWxlZ2FudHxlbnwwfHx8fDE3Njk3NjUyNjR8MA&ixlib=rb-4.1.0&q=85",
 };
 
-const AnimatedSection = ({ children, className = "" }) => {
+const AnimatedSection = ({ children, className = "", delay = 0 }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -26,7 +26,7 @@ const AnimatedSection = ({ children, className = "" }) => {
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: "easeOut", delay }}
       className={className}
     >
       {children}
@@ -154,16 +154,19 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <AnimatedSection key={feature.title}>
+              <AnimatedSection key={feature.title} delay={index * 0.15}>
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-center p-8 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="text-center p-8 bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300 hover-glow"
                 >
-                  <div className="w-16 h-16 mx-auto mb-6 border border-gold flex items-center justify-center">
+                  <motion.div 
+                    className="w-16 h-16 mx-auto mb-6 border border-gold flex items-center justify-center"
+                    whileHover={{ rotate: 360, borderColor: "#0A1628" }}
+                    transition={{ duration: 0.6 }}
+                  >
                     <feature.icon className="text-gold" size={28} />
-                  </div>
+                  </motion.div>
                   <h3 className="text-xl font-playfair text-navy mb-3">{feature.title}</h3>
                   <p className="text-gray-600 text-sm">{feature.desc}</p>
                 </motion.div>
@@ -380,16 +383,22 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <AnimatedSection key={testimonial.name}>
+              <AnimatedSection key={testimonial.name} delay={index * 0.15}>
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white p-8 shadow-lg"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                      <motion.span 
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 * i }}
+                      >
+                        <Star className="w-4 h-4 fill-gold text-gold" />
+                      </motion.span>
                     ))}
                   </div>
                   <p className="text-gray-600 italic mb-6 leading-relaxed">
