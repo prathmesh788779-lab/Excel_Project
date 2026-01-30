@@ -133,17 +133,18 @@ const GalleryPage = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="group relative overflow-hidden cursor-pointer aspect-[4/3]"
+                  whileHover={{ y: -8 }}
+                  className="group relative overflow-hidden cursor-pointer aspect-[4/3] shadow-lg hover:shadow-2xl"
                   onClick={() => openLightbox(index)}
                   data-testid={`gallery-item-${index}`}
                 >
                   <img
                     src={item.src}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 pointer-events-none"
                   />
-                  <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/60 transition-all duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/60 transition-all duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                     <div className="text-center">
                       <p className="text-white font-playfair text-xl">{item.title}</p>
                       <p className="text-gold text-xs uppercase tracking-wider mt-1">
